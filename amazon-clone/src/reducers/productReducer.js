@@ -10,14 +10,26 @@ export const productReducer = (state = productInitialState, action) => {
 
 
         case ADD_TO_BASKET:
-            return {
-                ...state, basket: [...state.basket, action?.payload]
-            };
+            const { id, title, image, price, rating, quantity } = action.payload;
+            const existingProductIndex = state.basket.findIndex(product => product.id === id);
+            if (existingProductIndex !== -1) {
+                let newBasket = [...state.basket];
+                console.log('newBasket',newBasket)
+                newBasket[existingProductIndex].quantity += quantity; // update quantity of existing product
+                return { ...state, basket: [...newBasket] };
+                // state.basket[existingProductIndex].quantity += quantity; // update quantity of existing product
+                // return { ...state };
+            }
+            const newProduct = { id, title, image, price, rating, quantity };
+            return { ...state, basket: [...state.basket, newProduct] };
+
+
+
 
 
         case EMPTY_BASKET:
             return {
-                ...state, basket:[]
+                ...state, basket: []
             };
 
 
@@ -31,7 +43,7 @@ export const productReducer = (state = productInitialState, action) => {
             //remove the index
             if (index >= 0) {
                 newBasket.splice(index, 1);
-            }else {
+            } else {
                 console.warn(
                     `Can't remove product id:${action.id} as its not in the basket`
                 )

@@ -3,10 +3,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {useEffect, useState} from "react";
 
 function Header() {
     const basket = useSelector(state => state?.productReducer?.basket);
     const cartQuantity = basket?.length;
+
+
+
     return (
         <div className="header">
             <Link to='/'>

@@ -5,7 +5,14 @@ export const fetchProduct = (product) => {
         type: ADD_TO_BASKET,
         payload: product,
     }
-}
+};
+
+export const updateProduct = (basket) => {
+    return {
+        type: ADD_TO_BASKET,
+        payload: basket,
+    }
+};
 
 export const removeProduct = (id) => {
     return {
