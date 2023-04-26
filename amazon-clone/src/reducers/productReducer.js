@@ -24,7 +24,30 @@ export const productReducer = (state = productInitialState, action) => {
             return { ...state, basket: [...state.basket, newProduct] };
 
 
-
+        case 'UPDATE_PRODUCT_QUANTITY':
+            // const { id, quantity } = action.payload;
+            const productId = action.payload.id;
+            const productQty = action.payload.quantity;
+            const updatedBasket = state.basket.map((item) => {
+                if (item.id === productId) {
+                    return {
+                        ...item,
+                        quantity: productQty,
+                        price: item.price * productQty // Calculate new price based on quantity
+                    };
+                }
+                return item;
+            });
+            return {
+                ...state,
+                basket: updatedBasket
+            };
+            // const updatedBasket = state.basket.map((product) =>
+            //     product.id === action.payload.id
+            //         ? { ...product, quantity: action.payload.quantity }
+            //         : product
+            // );
+            // return { ...state, basket: updatedBasket };
 
 
         case EMPTY_BASKET:

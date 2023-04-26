@@ -6,10 +6,14 @@ function Subtotal() {
 
     const basket = useSelector(state => state?.productReducer?.basket)
     //calculate the subtotal price
-    let initialPrice = 0
-    let subPrice = basket?.reduce(function (prev, curr){
-        return prev + curr.price
-    }, initialPrice)
+    let initialPrice = 0;
+    const subPrice = basket?.reduce((acc, item) => {
+        return acc + item.quantity * item.price;
+    }, initialPrice);
+
+    const cartQuantity = basket.reduce((acc, item) => {
+        return acc + item.quantity
+    }, 0);
 
     return (
         <div className="subtotal">
@@ -17,7 +21,7 @@ function Subtotal() {
                 renderText={(value) => (
                     <>
                         <p>
-                            Subtotal ({basket.length} items) : <strong>0</strong>
+                            Subtotal ({cartQuantity} items) : <strong>{value}</strong>
                             {/*Subtotal ({basket?.length} {!basket.length ? 'item' : 'items'}):*/}
                             {/*<strong>*/}
                             {/*    {value}*/}
@@ -29,7 +33,7 @@ function Subtotal() {
                     </>
                 )}
                 decimalScale={2}
-                // value={subPrice}
+                value={subPrice}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"$"}

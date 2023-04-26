@@ -1,9 +1,15 @@
 import './Checkout.css';
 import Subtotal from "./Subtotal";
 import {useSelector} from "react-redux";
+import {CheckoutProduct} from "./CheckoutProduct";
+import {useEffect} from "react";
 
 function Checkout() {
-    const basket = useSelector(state => state?.productReducer?.basket)
+    const basket = useSelector(state => state?.productReducer?.basket);
+
+    useEffect(() => {
+        console.log('basekt from cart',basket)
+    }, [basket])
     return (
         <div className="checkout">
             <div className="checkout_left">
@@ -13,6 +19,14 @@ function Checkout() {
                         Your shopping Basket
                     </h2>
                 {/*    basket items*/}
+                    {basket.map((item) => (<CheckoutProduct
+                        id = {item.id}
+                        title = {item.title}
+                        image = {item.image}
+                        price = {item.price}
+                        rating = {item.rating}
+                        quantity={item.quantity}
+                    />))}
                 </div>
 
                 <div className="checkout_right">

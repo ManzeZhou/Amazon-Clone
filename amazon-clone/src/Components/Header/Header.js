@@ -7,7 +7,12 @@ import {useEffect, useState} from "react";
 
 function Header() {
     const basket = useSelector(state => state?.productReducer?.basket);
-    const cartQuantity = basket?.length;
+
+    // const cartQuantity = basket?.length;
+
+    const cartQuantity = basket.reduce((acc, item) => {
+        return acc + item.quantity
+    }, 0);
 
 
 

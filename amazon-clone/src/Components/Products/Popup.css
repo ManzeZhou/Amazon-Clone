@@ -69,5 +69,21 @@
     margin-bottom: 20px;
 }
 
+.checkout-btn {
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.checkout-btn:hover {
+    background-color: #d1a945;
+}
+
 
 

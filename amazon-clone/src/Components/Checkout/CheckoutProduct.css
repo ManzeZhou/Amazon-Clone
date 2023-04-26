@@ -9,7 +9,7 @@
 
 }
 
-.checkoutProduct_info > button {
+.checkoutProduct_info > .checkoutProduct_info_btn > button {
     background-color: #f0c14b;
     border: 1px solid;
     margin-top: 10px;
@@ -35,3 +35,19 @@
     font-size: 17px;
     font-weight: 800;
 }
+
+.checkoutProduct_quantity {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #f0c14b;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+
+
+
+

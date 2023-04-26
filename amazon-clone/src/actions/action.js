@@ -14,6 +14,13 @@ export const updateProduct = (basket) => {
     }
 };
 
+export const updateProductQuantity = (id, quantity) => ({
+    type: 'UPDATE_PRODUCT_QUANTITY',
+    payload: { id, quantity },
+});
+
+
+
 export const removeProduct = (id) => {
     return {
         type:REMOVE_FROM_BASKET,

@@ -19,6 +19,11 @@ function Product({id, title, image, price, rating}) {
     }, [basket]);
 
     const addToBasket = () => {
+        const productInBasket = basket.find((item) => item.id === id);
+        if (productInBasket && productInBasket.quantity >= 10) {
+            alert("You can only have a maximum of 10 of this item in your cart.");
+            return;
+        }
         const quantity = 1;
         dispatch(fetchProduct({id, title, image, price, rating, quantity}));
         setShowPopup(true);
