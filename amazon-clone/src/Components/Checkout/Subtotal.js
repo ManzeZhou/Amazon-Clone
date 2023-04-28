@@ -1,5 +1,4 @@
 import './Subtotal.css';
-import CurrencyFormat from "react-currency-format";
 import {useSelector} from "react-redux";
 
 function Subtotal() {
@@ -17,27 +16,42 @@ function Subtotal() {
 
     return (
         <div className="subtotal">
-            <CurrencyFormat
-                renderText={(value) => (
-                    <>
-                        <p>
-                            Subtotal ({cartQuantity} items) : <strong>{value}</strong>
-                            {/*Subtotal ({basket?.length} {!basket.length ? 'item' : 'items'}):*/}
-                            {/*<strong>*/}
-                            {/*    {value}*/}
-                            {/*</strong>*/}
-                        </p>
-                        <small className="subtotal_gift">
-                            <input type="checkbox"/> This order contains a gift
-                        </small>
-                    </>
-                )}
-                decimalScale={2}
-                value={subPrice}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"$"}
-            />
+            {/*<CurrencyFormat*/}
+            {/*    renderText={(value) => (*/}
+            {/*        <>*/}
+            {/*            <p>*/}
+            {/*                Subtotal ({cartQuantity} items) : <strong>{value}</strong>*/}
+            {/*                /!*Subtotal ({basket?.length} {!basket.length ? 'item' : 'items'}):*!/*/}
+            {/*                /!*<strong>*!/*/}
+            {/*                /!*    {value}*!/*/}
+            {/*                /!*</strong>*!/*/}
+            {/*            </p>*/}
+            {/*            <small className="subtotal_gift">*/}
+            {/*                <input type="checkbox"/> This order contains a gift*/}
+            {/*            </small>*/}
+            {/*        </>*/}
+            {/*    )}*/}
+            {/*    decimalScale={2}*/}
+            {/*    value={subPrice}*/}
+            {/*    displayType={"text"}*/}
+            {/*    thousandSeparator={true}*/}
+            {/*    prefix={"$"}*/}
+            {/*/>*/}
+
+
+                <p>
+                    Subtotal ({cartQuantity} items) : <strong>${subPrice}</strong>
+                    {/*Subtotal ({basket?.length} {!basket.length ? 'item' : 'items'}):*/}
+                    {/*<strong>*/}
+                    {/*    {value}*/}
+                    {/*</strong>*/}
+                </p>
+                <small className="subtotal_gift">
+                    <input type="checkbox"/> This order contains a gift
+                </small>
+
+
+
             <button>Proceed to Checkout</button>
         </div>
     )
