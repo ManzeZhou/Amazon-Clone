@@ -1,12 +1,41 @@
 import './Home.css'
 import Product from "../Products/Product";
+import {useEffect, useState} from "react";
 function Home() {
+
+
+    const homeImageArr = [
+        'https://images-eu.ssl-images-amazon.com/images/G/02/digital/video/merch2016/Hero/Covid19/Generic/GWBleedingHero_ENG_COVIDUPDATE__XSite_1500x600_PV_en-GB._CB428684220_.jpg',
+        'https://m.media-amazon.com/images/I/71S89QP39cL._SX3000_.jpg',
+        'https://m.media-amazon.com/images/G/15/digital/video/merch/2022/Other/MLP_BG_right_1440x675.jpg',
+        'https://m.media-amazon.com/images/I/616o+HHx74L._SX3000_.jpg',
+        ' https://m.media-amazon.com/images/I/61z8amIOraL._SX3000_.jpg',
+        'https://m.media-amazon.com/images/I/81qa7iF0B5L._SX3000_.png',
+        'https://m.media-amazon.com/images/I/71Wffj7MKwL._SX3000_.jpg'
+    ];
+
+    const [index, setIndex] = useState(0);
+
+    const showPic = () => {
+        if(index === homeImageArr.length -1) {
+            return setIndex(0)
+        }
+        return setIndex(index+1)
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {showPic()}, 2000)
+        return () => {clearInterval(interval)}
+    });
+
     return (
         <div className="home">
             <div className="home_container">
                 <img
                     className="home_image"
-                    src="https://images-eu.ssl-images-amazon.com/images/G/02/digital/video/merch2016/Hero/Covid19/Generic/GWBleedingHero_ENG_COVIDUPDATE__XSite_1500x600_PV_en-GB._CB428684220_.jpg" alt="background pic"/>
+                    src={homeImageArr[index]}
+                    alt="background pic"
+                />
 
                 <div className="home_row">
                     <Product

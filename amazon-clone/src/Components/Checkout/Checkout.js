@@ -6,6 +6,7 @@ import {useEffect} from "react";
 
 function Checkout() {
     const basket = useSelector(state => state?.productReducer?.basket);
+    const userEmail = useSelector(state => state?.productReducer?.user);
 
     useEffect(() => {
         console.log('basekt from cart',basket)
@@ -15,11 +16,13 @@ function Checkout() {
             <div className="checkout_left">
                 <img className="checkout_ad" src="https://images-na.ssl-images-amazon.com/images/G/02/UK_CCMP/TM/OCC_Amazon1._CB423492668_.jpg" alt="checkout-img"/>
                 <div>
+                    {userEmail ? <h3> Hello, {userEmail?.email}</h3> : <h3> Hello, guest</h3>}
                     <h2 className="checkout_title">
-                        Your shopping Basket
+                       Your Shopping Basket
                     </h2>
                 {/*    basket items*/}
-                    {basket.map((item) => (<CheckoutProduct
+                    {basket.map((item, index) => (<CheckoutProduct
+                        key = {index}
                         id = {item.id}
                         title = {item.title}
                         image = {item.image}

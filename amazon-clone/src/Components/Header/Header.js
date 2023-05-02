@@ -4,9 +4,17 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
+import {auth} from "../../firsebase";
 
 function Header() {
     const basket = useSelector(state => state?.productReducer?.basket);
+    const userEmail = useSelector(state => state?.productReducer?.user);
+
+    const handleAuth = () => {
+        if (userEmail) {
+            auth.signOut();
+        }
+    }
 
     // const cartQuantity = basket?.length;
 
@@ -29,10 +37,12 @@ function Header() {
             </div>
 
             <div className="header_nav">
-                <Link to='/login'>
-                    <div className="header_option">
-                        <span className="header_optionLineOne">Hello Guest</span>
-                        <span className="header_optionLineTwo">Sign In</span>
+                <Link to={userEmail ? null : '/login'}>
+                    <div
+                        onClick={handleAuth}
+                        className="header_option">
+                        <span className="header_optionLineOne">Hello {userEmail ?  `${userEmail.email}` : 'Guest'}</span>
+                        <span className="header_optionLineTwo">{userEmail  ? 'Sign Out' : 'Sign In'}</span>
                     </div>
                 </Link>
 

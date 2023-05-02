@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./CheckoutProduct.css";
 import {useDispatch, useSelector} from "react-redux";
 import {removeProduct, updateProductQuantity} from "../../actions/action";
@@ -12,10 +12,15 @@ export const CheckoutProduct = ({id, image, title, price, rating,quantity, hideB
 
     const [selectedQuantity, setSelectedQuantity] = useState(quantity);
 
+    useEffect(() => {
+        console.log('selectedQuantity',selectedQuantity)
+    }, [selectedQuantity])
+
     const quantityOptions = Array.from({ length: 10 }, (_, i) => i + 1); // generate an array of 1 to 10 for quantity options
 
     const handleQuantityChange = (e) => {
         const newQuantity = parseInt(e.target.value);
+        console.log('newQuantity --->',newQuantity)
         setSelectedQuantity(newQuantity);
         dispatch(updateProductQuantity(id, newQuantity)); // dispatch an action to update product quantity in the Redux store
     };
@@ -30,17 +35,17 @@ export const CheckoutProduct = ({id, image, title, price, rating,quantity, hideB
                 <p className="checkoutProduct_title">{title}</p>
                 <p className="checkoutProduct_price">
                     <small>$</small>
-                    <strong>{price * quantity}</strong>
+                    <strong>{(parseFloat(price) * selectedQuantity).toFixed(2).replace(/\.?0+$/, '')}</strong>
                 </p>
                 <div className="checkoutProduct_rating">
-                    {Array(rating).fill().map((i) =>
-                        <p key={i}>⭐</p>
+                    {Array(rating).fill().map((i, index) =>
+                        <p key={index}>⭐</p>
                     )}
                 </div>
                 <div>
                     <select value={selectedQuantity} onChange={handleQuantityChange}>
-                        {quantityOptions.map((option) => (
-                            <option key={option} value={option}>
+                        {quantityOptions.map((option, index) => (
+                            <option key={index} value={option}>
                                 {option}
                             </option>
                         ))}

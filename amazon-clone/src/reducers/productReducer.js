@@ -30,10 +30,13 @@ export const productReducer = (state = productInitialState, action) => {
             const productQty = action.payload.quantity;
             const updatedBasket = state.basket.map((item) => {
                 if (item.id === productId) {
+                    console.log('productQty:',productQty);
+                    console.log('price', item.price)
+
                     return {
                         ...item,
                         quantity: productQty,
-                        price: item.price * productQty // Calculate new price based on quantity
+                        // price: parseInt(item.price) * parseInt(productQty) // Calculate new price based on quantity
                     };
                 }
                 return item;
@@ -42,12 +45,7 @@ export const productReducer = (state = productInitialState, action) => {
                 ...state,
                 basket: updatedBasket
             };
-            // const updatedBasket = state.basket.map((product) =>
-            //     product.id === action.payload.id
-            //         ? { ...product, quantity: action.payload.quantity }
-            //         : product
-            // );
-            // return { ...state, basket: updatedBasket };
+
 
 
         case EMPTY_BASKET:
