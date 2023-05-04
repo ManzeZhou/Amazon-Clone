@@ -12,15 +12,11 @@ export const CheckoutProduct = ({id, image, title, price, rating,quantity, hideB
 
     const [selectedQuantity, setSelectedQuantity] = useState(quantity);
 
-    useEffect(() => {
-        console.log('selectedQuantity',selectedQuantity)
-    }, [selectedQuantity])
 
     const quantityOptions = Array.from({ length: 10 }, (_, i) => i + 1); // generate an array of 1 to 10 for quantity options
 
     const handleQuantityChange = (e) => {
         const newQuantity = parseInt(e.target.value);
-        console.log('newQuantity --->',newQuantity)
         setSelectedQuantity(newQuantity);
         dispatch(updateProductQuantity(id, newQuantity)); // dispatch an action to update product quantity in the Redux store
     };

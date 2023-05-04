@@ -10,7 +10,8 @@ function Checkout() {
 
     useEffect(() => {
         console.log('basekt from cart',basket)
-    }, [basket])
+    }, [basket]);
+
     return (
         <div className="checkout">
             <div className="checkout_left">

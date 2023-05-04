@@ -8,7 +8,12 @@ import {useEffect} from "react";
 import {auth} from "./firsebase";
 import {useDispatch} from "react-redux";
 import {setUser} from "./actions/action";
-import Payment from "./Components/Checkout/Payment"
+import Payment from "./Components/Checkout/Payment";
+import {loadStripe} from "@stripe/stripe-js";
+import {Elements} from "@stripe/react-stripe-js";
+
+const promise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY);
+
 
 
 function App() {
@@ -17,7 +22,7 @@ function App() {
 
     useEffect(() => {
         auth.onAuthStateChanged(authUser => {
-            console.log('the user is ', authUser);
+            // console.log('the user is ', authUser);
 
             if (authUser) {
                 // the user just logged in / was logged in
@@ -37,7 +42,7 @@ function App() {
                     <Route path="/" element={[<Header/>, <Home/>]}/>
                     <Route path="/checkout" element={[<Header/>, <Checkout/>]}/>
                     <Route path="/login" element={<Login />}/>
-                    <Route path="/payment" element={[<Header/>, <Payment />]}/>
+                    <Route path="/payment" element={[<Header/>, <Elements stripe={promise}><Payment /></Elements>]}/>
                 </Routes>
             </div>
         </Router>
