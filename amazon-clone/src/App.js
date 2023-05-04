@@ -8,6 +8,7 @@ import {useEffect} from "react";
 import {auth} from "./firsebase";
 import {useDispatch} from "react-redux";
 import {setUser} from "./actions/action";
+import Payment from "./Components/Checkout/Payment"
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                     <Route path="/" element={[<Header/>, <Home/>]}/>
                     <Route path="/checkout" element={[<Header/>, <Checkout/>]}/>
                     <Route path="/login" element={<Login />}/>
+                    <Route path="/payment" element={[<Header/>, <Payment />]}/>
                 </Routes>
             </div>
         </Router>

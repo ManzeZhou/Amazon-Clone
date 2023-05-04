@@ -1,8 +1,11 @@
 import './Subtotal.css';
 import {useSelector} from "react-redux";
 import CurrencyFormat from "react-currency-format";
+import {useNavigate} from "react-router-dom";
 
 function Subtotal() {
+
+    const navigate = useNavigate();
 
     const basket = useSelector(state => state?.productReducer?.basket)
     //calculate the subtotal price
@@ -49,7 +52,7 @@ function Subtotal() {
 
 
 
-            <button>Proceed to Checkout</button>
+            <button onClick={() => navigate('/payment')}>Proceed to Checkout</button>
         </div>
     )
 }
