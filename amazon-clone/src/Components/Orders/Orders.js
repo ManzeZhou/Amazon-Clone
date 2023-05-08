@@ -38,7 +38,7 @@ const Orders = () => {
 
             {userEmail ?
                 <div className="orders_order">
-                    {orders.length === 0 ?  <h3>You have no orders <button onClick={() => navigate('/')}>Continue to Shopping</button></h3>: orders?.map((order, index) => (
+                    {orders.length === 0 ?  <h3>You have no orders <button className="orders_btn" onClick={() => navigate('/')}>Continue to Shopping</button></h3>: orders?.map((order, index) => (
                         <Order order={order} key={index}/>
                     ))}
                 </div> :

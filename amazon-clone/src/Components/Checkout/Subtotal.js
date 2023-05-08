@@ -7,7 +7,8 @@ function Subtotal() {
 
     const navigate = useNavigate();
 
-    const basket = useSelector(state => state?.productReducer?.basket)
+    const basket = useSelector(state => state?.productReducer?.basket);
+    const userEmail = useSelector(state => state?.productReducer?.user);
     //calculate the subtotal price
     let initialPrice = 0;
     const subPrice = basket?.reduce((acc, item) => {
@@ -56,7 +57,10 @@ function Subtotal() {
                 onClick={() => {
                     if(!cartQuantity) {
                         alert('Your Cart is Empty')
-                    } else {
+                    } if(!userEmail) {
+                        navigate('/login')
+                    }
+                    else {
                         navigate('/payment')
                     }
                 }}>Proceed to Checkout</button>

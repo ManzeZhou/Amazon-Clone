@@ -48,7 +48,7 @@ function Product({id, title, image, price, rating}) {
                     </div>
                 </div>
                 <img src={image} alt={title}/>
-                <button onClick={addToBasket}>Add to Basket</button>
+                <button className="product_btn" onClick={addToBasket}>Add to Basket</button>
             </div>
             {showPopup && <Popup title={title} image={image} price={price} onClose={() => setShowPopup(false)} visible={showPopup}/>}
 
