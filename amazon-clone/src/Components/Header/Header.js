@@ -48,7 +48,7 @@ function Header() {
 
                 <div className="header_option">
                     <span className="header_optionLineOne">Returns</span>
-                    <span className="header_optionLineTwo">& Orders</span>
+                    <Link to='/orders' style={{color: 'white', textDecoration:'none'}}><span className="header_optionLineTwo">& Orders</span></Link>
                 </div>
 
 

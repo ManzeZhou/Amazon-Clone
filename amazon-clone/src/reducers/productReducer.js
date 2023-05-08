@@ -1,4 +1,4 @@
-import {ADD_TO_BASKET, EMPTY_BASKET, REMOVE_FROM_BASKET, SET_USER} from "../consts/helper";
+import {ADD_TO_BASKET, EMPTY_BASKET, REMOVE_FROM_BASKET, SET_USER, UPDATE_PRODUCT_QUANTITY} from "../consts/helper";
 
 const productInitialState = {
     basket: [],
@@ -24,7 +24,7 @@ export const productReducer = (state = productInitialState, action) => {
             return { ...state, basket: [...state.basket, newProduct] };
 
 
-        case 'UPDATE_PRODUCT_QUANTITY':
+        case UPDATE_PRODUCT_QUANTITY:
             // const { id, quantity } = action.payload;
             const productId = action.payload.id;
             const productQty = action.payload.quantity;

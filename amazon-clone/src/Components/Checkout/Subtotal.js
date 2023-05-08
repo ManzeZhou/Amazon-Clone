@@ -52,7 +52,14 @@ function Subtotal() {
 
 
 
-            <button onClick={() => navigate('/payment')}>Proceed to Checkout</button>
+            <button
+                onClick={() => {
+                    if(!cartQuantity) {
+                        alert('Your Cart is Empty')
+                    } else {
+                        navigate('/payment')
+                    }
+                }}>Proceed to Checkout</button>
         </div>
     )
 }
