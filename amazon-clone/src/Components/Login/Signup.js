@@ -4,35 +4,38 @@ import {useState} from "react";
 import {auth} from "../../firsebase";
 
 
-const Login = () => {
+const SignUp = () => {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
 
     const [password, setPassword] = useState('');
 
-    const signIn = e => {
-        e.preventDefault();
-        auth.signInWithEmailAndPassword(email, password)
-            .then(auth => {
-               if (auth) {
-                   navigate('/')
-               }
-            })
-            .catch(error => alert(error.message));
-    }
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [passwordMatch, setPasswordMatch] = useState(true);
+
+
+
 
     const register = e => {
         e.preventDefault();
-        auth
-            .createUserWithEmailAndPassword(email, password)
-            .then((auth) => {
-                console.log(auth);
-                if (auth) {
-                    navigate('/')
-                }
-            })
-            .catch(error => alert(error.message))
+
+        if (password !== confirmPassword) {
+            setPasswordMatch(false);
+        } else {
+            auth
+                .createUserWithEmailAndPassword(email, password)
+                .then((auth) => {
+                    console.log(auth);
+                    if (auth) {
+                        navigate('/')
+                    }
+                })
+                .catch(error => alert(error.message))
+        }
+
+
     }
 
     return (
@@ -57,22 +60,15 @@ const Login = () => {
                     <h5>Password</h5>
                     <input type="password" onChange={e => {setPassword(e.target.value)}}/>
 
+                    <h5>Confirm Password</h5>
+                    <input type="password" onChange={e => {setConfirmPassword(e.target.value)}}/>
+                    {!passwordMatch && <p style={{ color: 'red' }}>Passwords do not match</p>}
 
-                    <button
-                        className="login_signInBtn"
-                        type="submit"
-                        onClick={signIn}
-                    >
-                        Sign In
-                    </button>
 
                     <p>By signing-in you agree to the AMAZON's Conditions of Use & Sale. Please see our Privacy Notice,
                         our Cookies Notice and our Interest-Based Ads Notice.</p>
 
-                    {/*<button className="login_registerBtn" onClick={register}>Create your Amazon Account</button>*/}
-                    <Link to="/signup">
-                        <button className="login_registerBtn">Sign Up</button>
-                    </Link>
+                    <button className="login_registerBtn" onClick={register}>Create your Amazon Account</button>
 
                 </form>
             </div>
@@ -81,5 +77,4 @@ const Login = () => {
     )
 };
 
-export default Login;
-
+export default SignUp;

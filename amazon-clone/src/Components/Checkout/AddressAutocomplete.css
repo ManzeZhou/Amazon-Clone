@@ -1,0 +1,16 @@
+.suggestion-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggestion-list li {
+    padding: 8px;
+    cursor: pointer;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+}
+
+.suggestion-list li:hover {
+    background-color: #e0e0e0;
+}

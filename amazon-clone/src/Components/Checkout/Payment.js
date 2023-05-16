@@ -7,8 +7,11 @@ import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
 import {useEffect, useState} from "react";
 import CurrencyFormat from "react-currency-format";
 import axios from "axios";
-import {emptyBasket} from "../../actions/action";
-import {db}  from "../../firsebase";
+import {emptyBasket, emptyShippingInfo, storeUserInfo} from "../../actions/action";
+import {db} from "../../firsebase";
+import AddressAutocomplete from "./AddressAutocomplete";
+
+
 
 
 const Payment = () => {
@@ -28,6 +31,7 @@ const Payment = () => {
     const [succeeded, setSucceeded] = useState(false);
     const [processing, setProcessing] = useState('');
     const [clientSecret, setClientSecret] = useState(true);
+    const [address, setAddress] = useState('');
 
     const handleChange = e => {
         setDisabled(e.empty);
@@ -59,8 +63,13 @@ const Payment = () => {
             //   });
             //   setClientSecret(response.data.clientSecret)
             // }
-            const response = await axios.post(`https://us-central1-v2-550c9.cloudfunctions.net/api/payments/create?total=${getBasketTotal(basket) * 100}`)
-            setClientSecret(response.data.clientSecret)};
+
+            // const response = await axios.post(`https://us-central1-v2-550c9.cloudfunctions.net/api/payments/create?total=${getBasketTotal(basket) * 100}`)
+            // setClientSecret(response.data.clientSecret)
+
+            const response = await axios.post(`http://localhost:5001/v2-550c9/us-central1/api/payments/create?total=${getBasketTotal(basket) * 100}`)
+            setClientSecret(response.data.clientSecret)
+        };
 
         // run an async function inside useEffect
         getClientSecret();
@@ -68,38 +77,50 @@ const Payment = () => {
 
     console.log('THE SECRET IS --->', clientSecret);
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
-
+        // first dispatch this and then send it to database, then empty delivery info in store
+        dispatch(storeUserInfo(name, address, phoneNumber));
         const payload = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: elements.getElement(CardElement)
             }
         }).then(({paymentIntent}) => {
-            // firebase cloud store
-            db
-                .collection('users')
-                .doc(userEmail?.uid)
-                .collection('orders')
-                .doc(paymentIntent.id)
-                .set({
-                    basket: basket,
-                    amount: paymentIntent.amount,
-                    created: paymentIntent.created
-                });
+                // firebase cloud store
+                db
+                    .collection('users')
+                    .doc(userEmail?.uid)
+                    .collection('orders')
+                    .doc(paymentIntent.id)
+                    .set({
+                        basket: basket,
+                        amount: paymentIntent.amount,
+                        created: paymentIntent.created,
+                        uName: name,
+                        uAddress: address,
+                        uPhoneNum: phoneNumber
+                    });
 
-            setSucceeded(true);
-            console.log('succeeded ---->',succeeded)
-            setError(null);
-            setProcessing(false);
+                setSucceeded(true);
+                setError(null);
+                setProcessing(false);
 
-            dispatch(emptyBasket());
+                dispatch(emptyBasket());
+                // clear shipping info
+                dispatch(emptyShippingInfo());
 
-            navigate('/orders', { replace: true });
+                navigate('/orders', {replace: true});
             }
         )
-    }
+    };
+
+    // address info
+    const [name, setName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+
+
 
 
     return (<div className="payment">
@@ -112,11 +133,51 @@ const Payment = () => {
                     <h3>Delivery Address</h3>
                 </div>
 
+
                 <div className="payment_address">
-                    <p>{userEmail?.email}</p>
-                    <p>Address info</p>
-                    <p>Address city</p>
+                    <div style={{display: "flex", flexDirection: 'column'}}>
+                        <label
+                            style={{marginBottom: '5px', fontWeight: "bold"}}
+                            htmlFor="name">Name:</label>
+                        <input
+                            style={{padding: '8px', borderWidth:'1px', border: 'solid', borderColor: "lightgray", borderRadius: '4px', marginBottom:'10px'}}
+                            type="text"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+
+                    <AddressAutocomplete setAddress={setAddress} address={address}/>
+
+                    {/*<div style={{display: "flex", flexDirection: 'column'}}>*/}
+
+                    {/*    <label htmlFor="address">Address:</label>*/}
+
+                    {/*    <input*/}
+                    {/*        type="text"*/}
+                    {/*        id="address"*/}
+                    {/*        value={address}*/}
+                    {/*        onChange={(e) => setAddress(e.target.value)}*/}
+                    {/*    />*/}
+
+                    {/*</div>*/}
+
+                    <div style={{display: "flex", flexDirection: 'column'}}>
+                        <label
+                            style={{marginBottom: '5px', fontWeight: "bold"}}
+                            htmlFor="phoneNumber">Phone Number:</label>
+                        <input
+                            style={{padding: '8px', borderWidth:'1px', border: 'solid', borderColor: "lightgray", borderRadius: '4px', marginBottom:'10px'}}
+                            type="text"
+                            id="phoneNumber"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                    </div>
+
                 </div>
+
             </div>
 
             <div className="payment_section">
@@ -156,6 +217,7 @@ const Payment = () => {
                                 prefix={"$"}
                             />
                             <button
+                                // onClick={handleBuyNow}
                                 disabled={processing || disabled || succeeded}>
                                 <span>
                                 {processing ? <p>Processing</p> : 'Buy Now'}

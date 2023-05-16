@@ -6,7 +6,7 @@ import {removeProduct, updateProductQuantity} from "../../actions/action";
 import './PyamentProduct.css';
 
 
-export const PaymentProduct = ({id, image, title, price, rating,quantity, hideButton}) => {
+export const PaymentProduct = ({id, image, title, price, rating,quantity}) => {
 
 
 
@@ -29,10 +29,6 @@ export const PaymentProduct = ({id, image, title, price, rating,quantity, hideBu
                     <h4>Quantity: {quantity}</h4>
                 </div>
 
-
-                <div className="checkoutProduct_info_btn">
-
-                </div>
 
 
             </div>

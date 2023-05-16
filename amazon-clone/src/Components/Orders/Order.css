@@ -16,3 +16,13 @@
     font-weight: 500;
     text-align: right;
 }
+
+.shipping_info_btn {
+    text-decoration: underline;
+    color: dodgerblue;
+}
+
+.shipping_info_btn:hover {
+    cursor: pointer;
+    color: #9c7e31;
+}

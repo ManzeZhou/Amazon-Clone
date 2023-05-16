@@ -57,10 +57,10 @@ function Subtotal() {
                 onClick={() => {
                     if(!cartQuantity) {
                         alert('Your Cart is Empty')
-                    } if(!userEmail) {
+                    } if(!userEmail && cartQuantity) {
                         navigate('/login')
                     }
-                    else {
+                    else if(cartQuantity && userEmail) {
                         navigate('/payment')
                     }
                 }}>Proceed to Checkout</button>
