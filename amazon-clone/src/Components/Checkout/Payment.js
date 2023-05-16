@@ -30,8 +30,13 @@ const Payment = () => {
     const [error, setError] = useState(null);
     const [succeeded, setSucceeded] = useState(false);
     const [processing, setProcessing] = useState('');
-    const [clientSecret, setClientSecret] = useState(true);
+    // const [clientSecret, setClientSecret] = useState(true);
+    const [clientSecret, setClientSecret] = useState(null);
     const [address, setAddress] = useState('');
+
+    // address info
+    const [name, setName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
 
     const handleChange = e => {
         setDisabled(e.empty);
@@ -52,9 +57,15 @@ const Payment = () => {
     }, 0);
 
     useEffect(() => {
+        console.log('basket --->',basket);
+        console.log('THE SECRET IS --->', clientSecret);
+    }, [basket, clientSecret])
+
+    useEffect(() => {
         //generate the special stripe secret which allows us to charge a customer
 
         const getClientSecret = async () => {
+
 
             //   const response = await axios({
             //     method: 'post',
@@ -64,18 +75,24 @@ const Payment = () => {
             //   setClientSecret(response.data.clientSecret)
             // }
 
-            // const response = await axios.post(`https://us-central1-v2-550c9.cloudfunctions.net/api/payments/create?total=${getBasketTotal(basket) * 100}`)
-            // setClientSecret(response.data.clientSecret)
+            try {
+                const response = await axios.post(`https://us-central1-v2-550c9.cloudfunctions.net/api/payments/create?total=${getBasketTotal(basket) * 100}`);
+                setClientSecret(response.data.clientSecret);
+            } catch (e) {
+                console.log(e);
+                setClientSecret(null);
+            }
 
-            const response = await axios.post(`http://localhost:5001/v2-550c9/us-central1/api/payments/create?total=${getBasketTotal(basket) * 100}`)
-            setClientSecret(response.data.clientSecret)
+            // const response = await axios.post(`http://localhost:5001/v2-550c9/us-central1/api/payments/create?total=${getBasketTotal(basket) * 100}`)
+            // setClientSecret(response.data.clientSecret)
         };
 
         // run an async function inside useEffect
+        setClientSecret(null);
         getClientSecret();
     }, [basket]);
 
-    console.log('THE SECRET IS --->', clientSecret);
+
 
 
     const handleSubmit = async (e) => {
@@ -83,42 +100,49 @@ const Payment = () => {
         setProcessing(true);
         // first dispatch this and then send it to database, then empty delivery info in store
         dispatch(storeUserInfo(name, address, phoneNumber));
-        const payload = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: elements.getElement(CardElement)
-            }
-        }).then(({paymentIntent}) => {
-                // firebase cloud store
-                db
-                    .collection('users')
-                    .doc(userEmail?.uid)
-                    .collection('orders')
-                    .doc(paymentIntent.id)
-                    .set({
-                        basket: basket,
-                        amount: paymentIntent.amount,
-                        created: paymentIntent.created,
-                        uName: name,
-                        uAddress: address,
-                        uPhoneNum: phoneNumber
-                    });
+        if(clientSecret && typeof clientSecret === 'string') {
 
-                setSucceeded(true);
-                setError(null);
-                setProcessing(false);
+            const payload = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: elements.getElement(CardElement)
+                }
+            }).then(({paymentIntent}) => {
+                    // firebase cloud store
+                    db
+                        .collection('users')
+                        .doc(userEmail?.uid)
+                        .collection('orders')
+                        .doc(paymentIntent.id)
+                        .set({
+                            basket: basket,
+                            amount: paymentIntent.amount,
+                            created: paymentIntent.created,
+                            uName: name,
+                            uAddress: address,
+                            uPhoneNum: phoneNumber
+                        });
 
-                dispatch(emptyBasket());
-                // clear shipping info
-                dispatch(emptyShippingInfo());
+                    setSucceeded(true);
+                    setError(null);
+                    setProcessing(false);
 
-                navigate('/orders', {replace: true});
-            }
-        )
+                    dispatch(emptyBasket());
+                    // clear shipping info
+                    dispatch(emptyShippingInfo());
+
+                    navigate('/orders', {replace: true});
+                }
+            ).catch((err) => {
+                console.log(err);
+                setProcessing(false)
+            })
+        } else {
+            console.log('Invalid ClientSecret');
+            setProcessing(false);
+        }
     };
 
-    // address info
-    const [name, setName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+
 
 
 

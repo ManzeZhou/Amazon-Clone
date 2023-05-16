@@ -14,9 +14,9 @@ function Product({id, title, image, price, rating}) {
     const [showPopup, setShowPopup] = useState(false);
 
 
-    useEffect(() => {
-        console.log('basket from store', basket)
-    }, [basket]);
+    // useEffect(() => {
+    //     console.log('basket from store', basket)
+    // }, [basket]);
 
     const addToBasket = () => {
         const productInBasket = basket.find((item) => item.id === id);

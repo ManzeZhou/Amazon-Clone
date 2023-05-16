@@ -8,9 +8,9 @@ function Checkout() {
     const basket = useSelector(state => state?.productReducer?.basket);
     const userEmail = useSelector(state => state?.productReducer?.user);
 
-    useEffect(() => {
-        console.log('basekt from cart',basket)
-    }, [basket]);
+    // useEffect(() => {
+    //     console.log('basekt from cart',basket)
+    // }, [basket]);
 
     return (
         <div className="checkout">

@@ -17,6 +17,8 @@ app.post("/payments/create", async (request, response) => {
     amount: total,
     currency: "usd",
   });
+
+  response.setHeader("Cache-Control", "no-store");
   response.status(201).send({
     clientSecret: paymentIntent.client_secret,
   });

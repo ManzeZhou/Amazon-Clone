@@ -14,7 +14,7 @@ export const productReducer = (state = productInitialState, action) => {
             const existingProductIndex = state.basket.findIndex(product => product.id === id);
             if (existingProductIndex !== -1) {
                 let newBasket = [...state.basket];
-                console.log('newBasket',newBasket)
+                // console.log('newBasket',newBasket)
                 newBasket[existingProductIndex].quantity += quantity; // update quantity of existing product
                 return { ...state, basket: [...newBasket] };
                 // state.basket[existingProductIndex].quantity += quantity; // update quantity of existing product
@@ -30,8 +30,8 @@ export const productReducer = (state = productInitialState, action) => {
             const productQty = action.payload.quantity;
             const updatedBasket = state.basket.map((item) => {
                 if (item.id === productId) {
-                    console.log('productQty:',productQty);
-                    console.log('price', item.price)
+                    // console.log('productQty:',productQty);
+                    // console.log('price', item.price)
 
                     return {
                         ...item,
@@ -59,7 +59,7 @@ export const productReducer = (state = productInitialState, action) => {
             // find the product that needs to be removed
             const index = state?.basket?.findIndex(
                 (basketItem) => basketItem.id === action.payload);
-            console.log(index)
+            // console.log(index)
             let newBasket = [...state.basket]
             //remove the index
             if (index >= 0) {
