@@ -71,7 +71,7 @@ const Login = () => {
 
                     {/*<button className="login_registerBtn" onClick={register}>Create your Amazon Account</button>*/}
                     <Link to="/signup">
-                        <button className="login_registerBtn">Sign Up</button>
+                        <button className="signUpBtn">Sign Up</button>
                     </Link>
 
                 </form>
