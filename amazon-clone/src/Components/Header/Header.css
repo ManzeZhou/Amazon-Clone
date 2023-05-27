@@ -36,7 +36,7 @@
     /*width: 100px;*/
     /*max-width: 100px;*/
     /*width: 15%;*/
-    max-width: 30%;
+    /*max-width: 30%;*/
     object-fit: contain;
     /*margin: 0 20px;*/
     /*margin-top: 18px;*/
@@ -118,9 +118,24 @@
         font-size: 7px;
     }
 
-
-
     .header_optionLineTwo {
         font-size: 10px;
+    }
+}
+
+@media (max-width: 1280px) {
+    .header_option {
+        flex-direction: column;
+        margin: 0 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .header_optionLineOne,
+    .header_optionLineTwo {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
