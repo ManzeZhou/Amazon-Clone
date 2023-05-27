@@ -61,7 +61,10 @@ const SignUp = () => {
                     <input type="password" onChange={e => {setPassword(e.target.value)}}/>
 
                     <h5>Confirm Password</h5>
-                    <input type="password" onChange={e => {setConfirmPassword(e.target.value)}}/>
+                    <input type="password" onChange={e => {
+                        setConfirmPassword(e.target.value);
+                        setPasswordMatch(e.target.value === password)}
+                    }/>
                     {!passwordMatch && <p style={{ color: 'red' }}>Passwords do not match</p>}
 
 

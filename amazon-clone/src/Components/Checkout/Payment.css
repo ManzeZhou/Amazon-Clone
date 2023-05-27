@@ -53,5 +53,20 @@
     cursor: pointer;
 }
 
+@media (max-width: 768px) {
+    .payment_section {
+        flex-direction: column;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .payment_title,
+    .payment_address,
+    .payment_items,
+    .payment_details {
+        flex: 1;
+    }
+}
+
 
 

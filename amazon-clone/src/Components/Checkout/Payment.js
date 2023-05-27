@@ -12,8 +12,6 @@ import {db} from "../../firsebase";
 import AddressAutocomplete from "./AddressAutocomplete";
 
 
-
-
 const Payment = () => {
 
     const navigate = useNavigate();
@@ -57,7 +55,7 @@ const Payment = () => {
     }, 0);
 
     useEffect(() => {
-        console.log('basket --->',basket);
+        console.log('basket --->', basket);
         console.log('THE SECRET IS --->', clientSecret);
     }, [basket, clientSecret])
 
@@ -93,58 +91,64 @@ const Payment = () => {
     }, [basket]);
 
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
         // first dispatch this and then send it to database, then empty delivery info in store
-        dispatch(storeUserInfo(name, address, phoneNumber));
-        if(clientSecret && typeof clientSecret === 'string') {
 
-            const payload = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: elements.getElement(CardElement)
-                }
-            }).then(({paymentIntent}) => {
-                    // firebase cloud store
-                    db
-                        .collection('users')
-                        .doc(userEmail?.uid)
-                        .collection('orders')
-                        .doc(paymentIntent.id)
-                        .set({
-                            basket: basket,
-                            amount: paymentIntent.amount,
-                            created: paymentIntent.created,
-                            uName: name,
-                            uAddress: address,
-                            uPhoneNum: phoneNumber
-                        });
+    dispatch(storeUserInfo(name, address, phoneNumber));
 
-                    setSucceeded(true);
-                    setError(null);
+
+        if (clientSecret && typeof clientSecret === 'string') {
+
+                if(name && phoneNumber && address) {
+                    const payload = await stripe.confirmCardPayment(clientSecret, {
+                        payment_method: {
+                            card: elements.getElement(CardElement)
+                        }
+                    }).then(({paymentIntent}) => {
+                            // firebase cloud store
+                            db
+                                .collection('users')
+                                .doc(userEmail?.uid)
+                                .collection('orders')
+                                .doc(paymentIntent.id)
+                                .set({
+                                    basket: basket,
+                                    amount: paymentIntent.amount,
+                                    created: paymentIntent.created,
+                                    uName: name,
+                                    uAddress: address,
+                                    uPhoneNum: phoneNumber
+                                });
+
+                            setSucceeded(true);
+                            setError(null);
+                            setProcessing(false);
+
+                            dispatch(emptyBasket());
+                            // clear shipping info
+                            dispatch(emptyShippingInfo());
+
+                            navigate('/orders', {replace: true});
+                        }
+                    ).catch((err) => {
+                        console.log(err);
+                        setProcessing(false)
+                    })
+                } else {
+                    alert('please complete the shipping information');
                     setProcessing(false);
-
-                    dispatch(emptyBasket());
-                    // clear shipping info
-                    dispatch(emptyShippingInfo());
-
-                    navigate('/orders', {replace: true});
                 }
-            ).catch((err) => {
-                console.log(err);
-                setProcessing(false)
-            })
+
+
         } else {
             console.log('Invalid ClientSecret');
             setProcessing(false);
+            navigate('/');
+            alert('Sorry, something went wrong. Please try again.')
         }
     };
-
-
-
-
 
 
     return (<div className="payment">
@@ -164,7 +168,14 @@ const Payment = () => {
                             style={{marginBottom: '5px', fontWeight: "bold"}}
                             htmlFor="name">Name:</label>
                         <input
-                            style={{padding: '8px', borderWidth:'1px', border: 'solid', borderColor: "lightgray", borderRadius: '4px', marginBottom:'10px'}}
+                            style={{
+                                padding: '8px',
+                                borderWidth: '1px',
+                                border: 'solid',
+                                borderColor: "lightgray",
+                                borderRadius: '4px',
+                                marginBottom: '10px'
+                            }}
                             type="text"
                             id="name"
                             value={name}
@@ -192,7 +203,14 @@ const Payment = () => {
                             style={{marginBottom: '5px', fontWeight: "bold"}}
                             htmlFor="phoneNumber">Phone Number:</label>
                         <input
-                            style={{padding: '8px', borderWidth:'1px', border: 'solid', borderColor: "lightgray", borderRadius: '4px', marginBottom:'10px'}}
+                            style={{
+                                padding: '8px',
+                                borderWidth: '1px',
+                                border: 'solid',
+                                borderColor: "lightgray",
+                                borderRadius: '4px',
+                                marginBottom: '10px'
+                            }}
                             type="text"
                             id="phoneNumber"
                             value={phoneNumber}

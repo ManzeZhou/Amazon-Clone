@@ -23,3 +23,48 @@
     cursor: pointer;
     color: white;
 }
+
+@media (max-width: 768px) {
+    .order {
+        padding: 20px;
+    }
+
+    .order_id {
+        top: 20px;
+        right: 10px;
+    }
+
+    .shipping_info_btn {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .shipping_info_btn > svg {
+        margin-left: 10px;
+    }
+
+    .shipping_info_btn:hover {
+        color: #9c7e31;
+    }
+}
+
+@media (max-width: 415px) {
+    .orders {
+        padding: 10px;
+    }
+
+    .order {
+        padding: 10px;
+    }
+
+    .order_id {
+        top: 10px;
+        right: 5px;
+    }
+
+    .order_total {
+        font-size: 16px;
+    }
+}
+
